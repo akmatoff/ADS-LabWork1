@@ -1,39 +1,74 @@
-import java.awt.print.Book;
+public class BooksList {
+    Book head;
 
-class BooksList {
-    private BookListElement head;
-    private BookListElement tail;
+    static class Book {
+        String udk;
+        String author;
+        String title;
+        String pubYear;
 
-    void addFront(String udk) {
-        BookListElement a = new BookListElement();
-        a.udk = udk;
+        Book next;
 
-        if(head == null) {
-            head = a;
-            tail = a;
-        } else {
-            a.next = head;
-            head = a;
+        Book(String udk, String author, String title, String pubYear) {
+            this.udk = udk;
+            this.author = author;
+            this.title = title;
+            this.pubYear = pubYear;
+    }
+}
+
+    public void push(String udk, String author, String title, String pubYear) {
+        Book newBook = new Book(udk, author, title, pubYear);
+        
+        newBook.next = head;
+        head = newBook;
+    }
+
+    public void append(String udk, String author, String title, String pubYear) {
+        Book newBook = new Book(udk, author, title, pubYear);
+
+        if (head == null) {
+            head = new Book(udk, author, title, pubYear);
+            return;
+        }
+
+        newBook.next = null;
+
+        Book last = head;
+        while (last.next != null) {
+            last = last.next;
+        }
+
+        last.next = newBook;
+        return;
+    }
+
+    public void printBooks() {
+
+        Book book = head;
+        while (book != null) {
+            System.out.println("УДК: " + book.udk + "\n" + "Автор: " + book.author + "\n" + "Название: " + book.title + "\n" + "Год издания: " + book.pubYear + "\n\n");
+            book = book.next;
         }
     }
 
-    void addBack(String udk) {
-        BookListElement a = new BookListElement();
-        a.udk = udk;
-        if(tail == null) {
-            head = a;
-            tail = a;
-        } else {
-            tail.next = a;
-            tail = a;
-        }
-    }
+    void deleteBook(String udkKey) {
+        Book temp = head, prev = null;
 
-    void printBookList() {
-        BookListElement t = head;
-        while (t != null) {
-            System.out.println(t.udk + " ");
-            t = t.next;
+        if (temp != null && temp.udk == udkKey) {
+            head = temp.next;
+            return;
         }
+
+        while (temp != null && temp.udk == udkKey) {
+            prev = temp;
+            temp = temp.next;
+        }
+
+        if (temp == null) {
+            return;
+        }
+
+        prev.next = temp.next;
     }
 }
