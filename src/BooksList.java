@@ -1,7 +1,7 @@
 public class BooksList {
     Book head;
 
-    static class Book {
+    class Book {
         String udk;
         String author;
         String title;
@@ -15,6 +15,7 @@ public class BooksList {
             this.title = title;
             this.pubYear = pubYear;
     }
+
 }
 
     public void push(String udk, String author, String title, String pubYear) {
@@ -71,4 +72,19 @@ public class BooksList {
 
         prev.next = temp.next;
     }
+
+    public int getCount() {
+        Book temp = head;
+        int count = 0;
+        while (temp != null) {
+            count++;
+            temp = temp.next;
+        }
+        return count;
+    }
+
+    public String getUdk() {
+        return udk;
+    }   
+
 }
