@@ -21,6 +21,7 @@ class BooksList {
         }
     }
 
+    // Empty list
     BooksList() {
         this.head = null;
         this.size = 0;
@@ -94,25 +95,42 @@ class BooksList {
     public void takeBook(String udk) {
         Book currentBook = this.head;
         Boolean found = false;
+        Boolean taken = false;
+        String bookTitle = "";
 
         while (currentBook != null) {
             if (udk.equals(currentBook.udk)) {
-                currentBook.amount--;
-                found = true;
+                if (currentBook.amount > 0) {
+                    currentBook.amount--;
+                    found = true;
 
-                System.out.println("Вы взяли книгу: ");
-                System.out.println("УДК: " + currentBook.udk);
-                System.out.println("Автор: " + currentBook.author);
-                System.out.println("Название: " + currentBook.title);
-                System.out.println("Год публикации: " + currentBook.pubYear);
-                System.out.println("Количество экземпляров: " + currentBook.amount);
-                System.out.println();    
+                    System.out.println();
+                    System.out.println("Вы взяли книгу: ");
+                    System.out.println("УДК: " + currentBook.udk);
+                    System.out.println("Автор: " + currentBook.author);
+                    System.out.println("Название: " + currentBook.title);
+                    System.out.println("Год публикации: " + currentBook.pubYear);
+                    System.out.println("Количество экземпляров: " + currentBook.amount);
+                    System.out.println();  
+
+                } else {
+                    bookTitle = currentBook.title;
+                    taken = true;
+                }  
+
             } 
+
             currentBook = currentBook.next;
         }
 
-        if (!found) {
-            System.out.println("Данной книги нет в библиотеке.");
+        if (taken) {
+            System.out.println("Книги \"" + bookTitle + "\" не осталось.");
+            System.out.println();
+        } else {
+            if (!found) {
+                System.out.println("Данной книги нет в библиотеке.");
+                System.out.println();
+            }
         }
 
         this.size--;
@@ -131,4 +149,88 @@ class BooksList {
             currentBook = currentBook.next;
         }
     }
+}
+
+class BooksListTaken {
+    BookTaken head;
+    int size;
+    BooksList booksList = new BooksList();
+
+    public class BookTaken {
+        String udk;
+        String author;
+        String title;
+        String pubYear;
+        BookTaken next;
+    
+        BookTaken(String udk, String author, String title, String pubYear) {
+            this.udk = udk;
+            this.author = author;
+            this.title = title;
+            this.pubYear = pubYear;
+            next = null;
+        }
+    }
+
+    // Empty list
+    BooksListTaken() {
+        this.head = null;
+        this.size = 0;
+    }
+
+    // Insert a new Node at the end of the list
+    public void insertLast(String udk, String author, String title, String pubYear) {
+        BookTaken newBook = new BookTaken(udk, author, title, pubYear); // New object of class
+        BookTaken currentBook;
+
+        // If empty, make head
+        if(this.head == null) {
+            this.head = newBook;
+        } else {
+            currentBook = this.head;
+
+            while (currentBook.next != null) {
+                currentBook = currentBook.next;
+            }
+
+            currentBook.next = newBook;
+        }
+
+        this.size++;
+    }
+
+    public void returnBook(String udk) {
+        BookTaken currentBook = head;
+        // BookTaken prevBook = null;
+
+        if (currentBook != null & currentBook.udk.equals(udk)) {
+            head = currentBook.next;
+            return;
+        } 
+
+        // while (currentBook != null && !currentBook.udk.equals(udk)) {
+        //     prevBook = currentBook;
+        //     prevBook = prevBook.next;
+        // }
+
+        // if (prevBook == null) {
+        //     System.out.println("У вас нет такой книги.");
+        //     return;
+        // }
+
+        // prevBook.next = currentBook.next;
+    }
+
+    public void printList() {
+        BookTaken currentBook = head;
+        while (currentBook != null) {
+            System.out.println("УДК: " + currentBook.udk);
+            System.out.println("Автор: " + currentBook.author);
+            System.out.println("Название: " + currentBook.title);
+            System.out.println("Год публикации: " + currentBook.pubYear);
+            System.out.println();
+            currentBook = currentBook.next;
+        }
+    }
+
 }
